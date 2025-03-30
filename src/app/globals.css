@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #0065ff;
+  --secondary-color: #96c0ff;
+  --title-color: #2c2e30;
+  --desc-color: #70707a;
+  --body-color: #ffffff;
+  --border-color: #e6e8ec;
+  --white-color: #F5F5F5;
+  --bg-color: #F5F5F5;
+  --bg100-color: #e6f0ff;
+  --warning-color: #ffedbc;
+
+  /* Font Family */
+  --h1-font-size: 24px;
+  --h2-font-size: 18px;
+  --h3-font-size: 16px;
+  --normal-font-size: 15px;
+  --small-font-size: 13px;
+}
+
+.bg-bgimage {
+  background-image: url('../assets/img/bg/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-bgverticalimage {
+  background-image: url('../assets/img/bg/bgvertical.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dark {
+  --title-color: #ffffff;
+  --desc-color: #ffffffaf;
+  --body-color: #121826;
+  --border-color: #394150;
+  --white-color: #F5F5F5;
+  --bg-color: #212936;
+  --bg100-color: #293343;
+}
+
+body {
+  background: var(--body-color);
+  scroll-behavior: smooth;
+  line-height: 125%;
+  overflow-y: auto;
+}
+
+body.dark {
+  background: var(--body-color);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@layer base {
+  h1 {
+    @apply text-h1 text-title dark:text-white font-semibold;
+  }
+
+  h2 {
+    @apply text-h2 text-title dark:text-white font-semibold;
+  }
+
+  h3 {
+    @apply text-h3 text-title dark:text-white font-semibold;
+  }
+
+  h4 {
+    @apply text-h4 text-title dark:text-white font-semibold;
+  }
+
+  li,
+  span {
+    @apply text-base leading-[120%];
+  }
+
+  p {
+    @apply text-base text-desc dark:text-desc font-normal leading-[120%];
+  }
+
+  label {
+    @apply block mb-2 font-medium text-title dark:text-title text-[15px];
+  }
+
+  input {
+    @apply bg-bg100 dark:bg-bg100 text-[15px];
+  }
+
+  .btn_s {
+    @apply flex items-center gap-1 py-1 px-1 bg-bgimage rounded-md pr-2 justify-center;
+  }
+
+  .card {
+    @apply bg-white rounded-[24px] p-[24px] overflow-hidden;
+  }
+
+  .logo {
+    width: 180px;
+  }
+
+  .container-fluid {
+    padding: 0;
+    max-width: 1850px;
+    margin: auto;
+  }
+
+  .table_row {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  hr {
+    border: 1px solid var(--border-color) !important;
+  }
+
+  .icons {
+    /* font-size: 20px; */
+    width: 18px;
+  }
+
+  .fa_icons {
+    width: 18px;
+  }
+
+  .sidebar {
+    height: calc(100vh - 30px);
+  }
+
+  .ant-table-cell {
+    background: transparent !important;
+  }
+
+  .chat_screen {
+    height: 88vh;
+  }
+
+  .chat_box {
+    height: inherit;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
