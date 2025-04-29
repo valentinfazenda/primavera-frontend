@@ -46,6 +46,10 @@ const config = {
         base: "var(--normal-font-size)",
         sm: "var(--small-font-size)",
       },
+      boxShadow: {
+        'blue': '0px 0px 8px 15px #0065FF1A',
+      },
+
     },
   },
   plugins: [],

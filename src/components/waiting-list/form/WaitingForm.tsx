@@ -1,13 +1,10 @@
 "use client";
 import axiosInstance from "@/lib/axios/axios";
 import { userSignInValidation } from "@/lib/validations/auth";
-import { faEye, faEyeSlash } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { message } from "antd";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -15,9 +12,7 @@ interface SignInFormProps {
   callbackUrl: string;
 }
 
-const SignInForm = ({ callbackUrl }: SignInFormProps) => {
-  const [showPassword, setShowPassword] = useState(false);
-
+const WaitingForm = ({ callbackUrl }: SignInFormProps) => {
   const form = useForm<z.infer<typeof userSignInValidation>>({
     resolver: zodResolver(userSignInValidation),
     defaultValues: {
@@ -79,10 +74,6 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
       <div className="flex flex-wrap -mx-3 mb-4">
@@ -103,48 +94,6 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
           />
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <div className="flex justify-between">
-            <label
-              className="block text-gray-800 text-sm font-normal mb-1"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div>
-              <Link
-                title="Reset password"
-                href="/waiting-list"
-                className="text-sm font-normal text-blue-600 hover:underline"
-              >
-                Forgot?
-              </Link>
-            </div>
-          </div>
-          <div className="relative flex items-center justify-center mt-1">
-            <input
-              {...form.register("password")}
-              id="password"
-              type={showPassword ? "text" : "password"}
-              className="form-input w-full text-gray-800 px-3 py-2 border border-[#D1E9FF] rounded-md bg-transparent"
-              placeholder="Enter your password"
-              required
-            />
-            <div
-              className="text-sm flex flex-row items-center gap-2 cursor-pointer absolute right-3"
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? (
-                <FontAwesomeIcon icon={faEyeSlash} className="icons" />
-              ) : (
-                <FontAwesomeIcon icon={faEye} className="icons" />
-              )}
-              {/* {showPassword ? "Cacher" : "Montrer"} */}
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="flex flex-wrap -mx-3 mt-3">
         <div className="w-full px-3">
@@ -152,15 +101,15 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
             type="submit"
             className="btn text-white bg-[#1570EF] hover:bg-[#66b0c1] w-full px-4 py-2 rounded-md"
           >
-            Login now
+            Join waiting list
           </button>
         </div>
       </div>
       <div className="flex items-center justify-center my-3">
         <p className="text-[#98A2B3]">
-          Don't have an account?{" "}
-          <Link href="/waiting-list" className="text-[#1570EF]">
-            Join waiting list
+          Already have an account ?
+          <Link href="/sign-in" className="text-[#1570EF]">
+            Log in
           </Link>
         </p>
       </div>
@@ -168,4 +117,4 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
   );
 };
 
-export default SignInForm;
+export default WaitingForm;

@@ -5,9 +5,9 @@ import logo from "@/assets/svg/logo.svg";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SignInForm from "./form/sign-in-form.component";
+import WaitingForm from "./form/WaitingForm";
 
-const SignInPageInner = () => {
+const WaitingListPageInner = () => {
   const searchParams = useSearchParams();
   const [callbackUrl, setCallbackUrl] = useState("/home");
 
@@ -18,7 +18,7 @@ const SignInPageInner = () => {
 
   return (
     <section className="bg-gradient-to-b from-gray-100 to-white h-screen overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
         <div className="h-screen hidden items-center justify-center lg:flex">
           <Image src={loginbg} alt="" className="h-screen" />
           <div className="absolute p-3">
@@ -38,22 +38,7 @@ const SignInPageInner = () => {
                 <Image src={logo} alt="" className="h-[80px] w-full" />
               </div>
               <div className="max-w-sm mx-auto">
-                <SignInForm callbackUrl={callbackUrl} />
-
-                {/* <form className="flex items-center justify-center gap-4">
-                  <button className="flex items-center justify-center text-center p-3 m-auto border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faFacebook} className="icons" />
-                  </button>
-                  <button className="flex items-center justify-center text-center p-3 border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faGoogle} className="icons" />
-                  </button>
-                  <button className="flex items-center justify-center text-center p-3 border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faApple} className="icons" />
-                  </button>
-                  <button className="flex items-center justify-center text-center p-3 border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faTwitter} className="icons" />
-                  </button>
-                </form> */}
+                <WaitingForm callbackUrl={callbackUrl} />
               </div>
             </div>
           </div>
@@ -63,4 +48,4 @@ const SignInPageInner = () => {
   );
 };
 
-export default SignInPageInner;
+export default WaitingListPageInner;
