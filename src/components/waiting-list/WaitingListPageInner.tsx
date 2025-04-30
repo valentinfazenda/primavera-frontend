@@ -30,7 +30,7 @@ const WaitingListPageInner = () => {
         </div>
         <div className="flex items-center justify-center h-screen px-6 lg:px-[100px]">
           <div
-            className="w-full md:w-[550px] lg:w-full mx-auto p-[40px] sm:px-6 border "
+            className="w-full md:w-[550px] lg:max-w-[550px] mx-auto p-[40px] sm:px-6 border rounded-[8px]"
             style={{ boxShadow: "0px 0px 8px 15px #0065FF1A" }}
           >
             <div className="w-full">
