@@ -39,21 +39,6 @@ const SignInPageInner = () => {
               </div>
               <div className="max-w-sm mx-auto">
                 <SignInForm callbackUrl={callbackUrl} />
-
-                {/* <form className="flex items-center justify-center gap-4">
-                  <button className="flex items-center justify-center text-center p-3 m-auto border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faFacebook} className="icons" />
-                  </button>
-                  <button className="flex items-center justify-center text-center p-3 border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faGoogle} className="icons" />
-                  </button>
-                  <button className="flex items-center justify-center text-center p-3 border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faApple} className="icons" />
-                  </button>
-                  <button className="flex items-center justify-center text-center p-3 border rounded-3xl bg-transparent hover:bg-blue-600 hover:text-white w-full">
-                    <FontAwesomeIcon icon={faTwitter} className="icons" />
-                  </button>
-                </form> */}
               </div>
             </div>
           </div>

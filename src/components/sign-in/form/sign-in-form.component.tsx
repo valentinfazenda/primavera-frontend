@@ -1,4 +1,5 @@
 "use client";
+import sadFace from "@/assets/svg/face-sad-sweat.svg";
 import axiosInstance from "@/lib/axios/axios";
 import { userSignInValidation } from "@/lib/validations/auth";
 import { faEye, faEyeSlash } from "@fortawesome/pro-light-svg-icons";
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { message } from "antd";
 import Cookies from "js-cookie";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,6 +19,11 @@ interface SignInFormProps {
 
 const SignInForm = ({ callbackUrl }: SignInFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [fieldError, setFieldError] = useState<{
+    field: string;
+    msg: string;
+  } | null>(null);
+  const [unexpectedError, setUnexpectedError] = useState(false);
 
   const form = useForm<z.infer<typeof userSignInValidation>>({
     resolver: zodResolver(userSignInValidation),
@@ -27,6 +34,8 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof userSignInValidation>) => {
+    setFieldError(null); // Reset error on submit
+    setUnexpectedError(false);
     const origin =
       process.env.NEXT_PUBLIC_API_URL ||
       (typeof window !== "undefined"
@@ -44,7 +53,21 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
       }),
     });
 
-    const data = await response.json();
+    type LoginResponse = {
+      token: string;
+      redirect?: string;
+      field?: string;
+      msg?: string;
+    };
+
+    let data: LoginResponse = { token: "" };
+    try {
+      data = await response.json();
+    } catch (e) {
+      // If response is not JSON, treat as unexpected error
+      setUnexpectedError(true);
+      return;
+    }
 
     if (response.ok) {
       // Store token in cookies
@@ -74,14 +97,55 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
         console.error("Error fetching user details:", error);
         message.error("Failed to retrieve user details.");
       }
+    } else if (response.status >= 500) {
+      setUnexpectedError(true);
     } else {
-      message.error(data.msg || "Informations d'identification incorrectes");
+      // Handle field-specific errors
+      if ((data as any).field && (data as any).msg) {
+        setFieldError({ field: (data as any).field, msg: (data as any).msg });
+      } else {
+        message.error(
+          (data as any).msg || "Informations d'identification incorrectes"
+        );
+      }
     }
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  if (unexpectedError) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        {/* Sad face icon */}
+        <Image src={sadFace} alt="Error" className="mb-4 w-24" />
+        <div className="text-center">
+          <p className="text-lg font-semibold text-red-600 mb-2">Oops!</p>
+          <p className="text-red-600 mb-2">
+            Something Went Wrong.
+            <br />
+            We Encountered An Unexpected Error.
+            <br />
+            The Website May Be Undergoing Maintenance.
+          </p>
+          <p className="text-red-600 mb-4">Please Try Again Later.</p>
+        </div>
+        <button
+          className="btn text-white bg-[#1570EF] hover:bg-[#66b0c1] w-full px-4 py-2 rounded-md mb-4"
+          onClick={() => setUnexpectedError(false)}
+        >
+          Go back to login page
+        </button>
+        <div>
+          <span className="text-[#98A2B3]">Don't Have An Account? </span>
+          <Link href="/waiting-list" className="text-[#1570EF] font-semibold">
+            Join Waiting List
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -101,6 +165,13 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
             placeholder="Enter your email"
             required
           />
+          {fieldError?.field === "email" && (
+            <p className="text-red-500 text-sm mt-1 text-center">
+              {fieldError.msg === "Unknown Email"
+                ? "Unknown Email - Join Our Waiting List"
+                : fieldError.msg}
+            </p>
+          )}
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-4">
@@ -140,9 +211,15 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
               ) : (
                 <FontAwesomeIcon icon={faEye} className="icons" />
               )}
-              {/* {showPassword ? "Cacher" : "Montrer"} */}
             </div>
           </div>
+          {fieldError?.field === "password" && (
+            <p className="text-red-500 text-sm mt-1 text-center">
+              {fieldError.msg === "Wrong Password"
+                ? "Wrong Password."
+                : fieldError.msg}
+            </p>
+          )}
         </div>
       </div>
 
