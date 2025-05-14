@@ -99,7 +99,9 @@ const WaitingForm = ({ callbackUrl }: SignInFormProps) => {
           />
           {fieldError?.field === "email" && (
             <p className="text-red-500 text-sm mt-1 text-center">
-              {fieldError.msg}
+              {fieldError.msg === "Email already in the waiting list"
+                ? "Email Already In The Waiting List"
+                : fieldError.msg}
             </p>
           )}
         </div>
