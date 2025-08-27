@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="container-fluid overflow-hidden">
+    <div className="overflow-hidden">
       <div className="flex items-center gap-4">
         <h1>Parameters</h1>
       </div>

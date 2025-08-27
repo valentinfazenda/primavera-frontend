@@ -49,7 +49,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             </button>
             <Navbar />
           </div>
-          <div className="mt-3 flex-grow flex">{children}</div>
+          <div className="mt-3 flex-grow flex-col flex">{children}</div>
         </Content>
       </Layout>
     </Layout>

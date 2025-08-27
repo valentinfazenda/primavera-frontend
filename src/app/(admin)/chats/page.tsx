@@ -64,7 +64,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex items-start gap-3 chat_screen">
+    <div className="flex flex-grow items-start gap-3 chat_screen">
       <ChatSidebar chats={chats} onSelectChat={setSelectedChat} /> {/* Pass the chat list */}
       <ChatSection selectedChat={selectedChat} onUpdateChat={handleUpdateChat} /> {/* Update chat messages */}
     </div>
