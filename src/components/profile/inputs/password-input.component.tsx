@@ -7,7 +7,6 @@ interface PassFieldProps {
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string; // Add name prop
   defaultValue?: string | number;
 }
 
@@ -16,7 +15,6 @@ const PasswordInput: React.FC<PassFieldProps> = ({
   placeholder,
   value,
   onChange,
-  name,
   defaultValue = ""
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,20 +25,19 @@ const PasswordInput: React.FC<PassFieldProps> = ({
 
   return (
     <div className="w-full">
-      <label htmlFor={name} className="block mb-[10px]">
+      <label htmlFor={label} className="block mb-[10px]">
         {label}
       </label>
       <div className="relative mt-1">
         <input
           type={showPassword ? "text" : "password"}
-          id={name} // Use name for the id
-          name={name} // Add name attribute
+          id={label} // Use name for the id
           className="w-full px-[16px] py-[12px] text-title bg-bg100 dark:bg-bg100 border dark:border-border rounded-md pr-12"
           placeholder={placeholder}
           required
           value={value}
           onChange={onChange}
-          aria-describedby={`${name}-error`}
+          aria-describedby={`${label}-error`}
           defaultValue={defaultValue}
         />
         <button
