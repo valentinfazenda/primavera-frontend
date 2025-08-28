@@ -5,13 +5,12 @@ interface InputFieldProps {
   placeholder?: string;
   type?: React.HTMLInputTypeAttribute;
   className?: string;
-  value: string | number;
-  name: string;
+  value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   min?: number;
-  defaultValue?: string;
+  defaultValue?: string | number;
   disabled?: boolean;
 }
 
@@ -21,30 +20,28 @@ const Input: React.FC<InputFieldProps> = ({
   type = "text",
   className = "",
   value,
-  name,
   required = false,
   min,
-  onChange = () => {},
+  onChange,
   disabled = false,
-  defaultValue = "",
-  onBlur = () => {},
+  defaultValue,
+  onBlur,
 }) => {
   return (
     <div className="w-full">
-      <label htmlFor={label} className="block mb-[10px]">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={label} className="block mb-[10px]">
+          {label}
+        </label>
+      )}
       <input
-        min={type === "number" ? min : ""}
+        id={label}
+        min={type === "number" ? min : undefined}
         type={type}
-        // id={label}
         className={`w-full px-[16px] py-[12px] text-title bg-bg100 dark:bg-bg100 border dark:border-border rounded-md ${className}`}
         placeholder={placeholder}
-        value={value}
-        name={name}
-        onChange={onChange}
+        {...(value !== undefined ? { value, onChange } : { defaultValue })}
         required={required}
-        defaultValue={defaultValue}
         disabled={disabled}
         onBlur={onBlur}
       />
