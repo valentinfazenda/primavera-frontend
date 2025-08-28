@@ -9,10 +9,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Import usePathname
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 
-const menuItems = [
+const mainMenuItems = [
   {
     name: "Home",
     icon: <FontAwesomeIcon icon={faHome} className="icons" />,
@@ -33,34 +33,35 @@ const menuItems = [
     icon: <FontAwesomeIcon icon={faGears} className="icons" />,
     link: "/parameters",
   },
-  {
-    name: "Profile",
-    icon: <FontAwesomeIcon icon={faUser} className="icons" />,
-    link: "/profile",
-  },
 ];
 
+const profileItem = {
+  name: "Profile",
+  icon: <FontAwesomeIcon icon={faUser} className="icons" />,
+  link: "/profile",
+};
+
 const Sidebar: FC = () => {
-  const pathname = usePathname(); // Get the current pathname
+  const pathname = usePathname();
 
   return (
-    <div className="p-2 rounded-md sidebar">
+    <div className="p-2 rounded-md sidebar flex flex-col h-full">
       <div className="flex items-center justify-between mb-3 w-full">
         <Image src={logo} alt="Logo" className="w-[160px] m-auto" />
       </div>
+
+      {/* Main navigation */}
       <nav>
         <ul className="space-y-2">
-          {menuItems.map((item, index) => {
-            const isActive =
-              pathname === item.link
-
+          {mainMenuItems.map((item, index) => {
+            const isActive = pathname === item.link;
             return (
               <li key={index}>
                 <Link
                   href={item.link}
                   className={`flex items-center justify-between space-x-2 ${
                     isActive ? "bg-primary text-white" : "text-title"
-                  } text-title rounded-md p-2 hover:bg-secondary hover:text-white transition duration-300 ease-in-out`}
+                  } rounded-md p-2 hover:bg-secondary hover:text-white transition duration-300 ease-in-out`}
                 >
                   <div className="flex gap-2 items-center">
                     {item.icon}
@@ -72,6 +73,19 @@ const Sidebar: FC = () => {
           })}
         </ul>
       </nav>
+
+      {/* Profile section at the bottom */}
+      <div className="mt-auto">
+        <Link
+          href={profileItem.link}
+          className={`flex items-center space-x-2 ${
+            pathname === profileItem.link ? "bg-primary text-white" : "text-title"
+          } rounded-md p-2 hover:bg-secondary hover:text-white transition duration-300 ease-in-out`}
+        >
+          {profileItem.icon}
+          <span className="font-semibold">{profileItem.name}</span>
+        </Link>
+      </div>
     </div>
   );
 };
