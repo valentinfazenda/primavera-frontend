@@ -5,13 +5,16 @@ import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import Input from "@/components/profile/inputs/input.component";
 import PasswordInput from "@/components/profile/inputs/password-input.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLockOpen } from "@fortawesome/pro-light-svg-icons";
+import { faUser, faLockOpen, faPen, faFloppyDisk } from "@fortawesome/pro-light-svg-icons";
 import Image from "next/image";
 import user from "@/assets/svg/logo.svg";
 
 export function ProfileForm() {
   const { data: profile, isLoading } = useProfile();
   const { mutate, isPending } = useUpdateProfile();
+
+  // Editing state
+  const [isEditing, setIsEditing] = useState(false);
 
   // Form state
   const [firstName, setFirstName] = useState("");
@@ -21,11 +24,12 @@ export function ProfileForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changePasswordSection, setChangePasswordSection] = useState(false);
 
-  // Display state (what is shown in the header)
+  // Display state
   const [displayFirstName, setDisplayFirstName] = useState("");
   const [displayLastName, setDisplayLastName] = useState("");
+  const [displayEmail, setDisplayEmail] = useState("");
 
-  // Fill both form + display states when profile loads
+  // Fill states when profile loads
   useEffect(() => {
     if (profile) {
       setFirstName(profile.firstName || "");
@@ -33,10 +37,11 @@ export function ProfileForm() {
       setEmail(profile.email || "");
       setDisplayFirstName(profile.firstName || "");
       setDisplayLastName(profile.lastName || "");
+      setDisplayEmail(profile.email || "");
     }
   }, [profile]);
 
-  const handleSubmit = () => {
+  const handleSave = () => {
     if (changePasswordSection && newPassword !== confirmPassword) {
       alert("Passwords do not match");
       return;
@@ -51,12 +56,16 @@ export function ProfileForm() {
       },
       {
         onSuccess: (updated) => {
-          // Only update the displayed name after successful save
+          // Update display values after successful save
           setDisplayFirstName(updated.firstName);
           setDisplayLastName(updated.lastName);
+          setDisplayEmail(updated.email);
+
+          // Reset states
           setChangePasswordSection(false);
           setNewPassword("");
           setConfirmPassword("");
+          setIsEditing(false);
         },
       }
     );
@@ -69,62 +78,82 @@ export function ProfileForm() {
       <div className="bg-[#FFFFFF1A] border border-[#FFFFFF80] rounded-lg p-3">
         <div className="flex items-center gap-3 mb-4">
           <FontAwesomeIcon icon={faUser} className="icons text-title" />
-          <h3 className="text-title">Information</h3>
+          <h3 className="text-title">Informations</h3>
         </div>
         <div className="bg-bg border border-[#FFFFFF80] rounded-lg p-3">
           <div className="flex justify-between items-center">
             <div className="flex justify-center items-center gap-2">
               <Image className="rounded-full" width={70} src={user} alt="user" />
-                <div>
+              <div>
                 <h2>
-                    {displayFirstName} {displayLastName}
+                  {displayFirstName} {displayLastName}
                 </h2>
                 <p>
-                    {profile?.status === "admin" ? "Administrator" : "User"}
+                  {profile?.status === "admin" ? "Administrator" : "User"}
                 </p>
-                </div>
+              </div>
             </div>
             <div className="flex items-center gap-3">
+                {isEditing ? (
+                <button
+                    onClick={handleSave}
+                    className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
+                    disabled={isPending}
+                >
+                    <FontAwesomeIcon icon={faFloppyDisk} className="icons" />
+                    {isPending ? "Saving..." : "Save"}
+                </button>
+                ) : (
+                <button
+                    onClick={() => setIsEditing(true)}
+                    className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
+                >
+                    <FontAwesomeIcon icon={faPen} className="icons" />
+                    Edit
+                </button>
+                )}
               <button
-                onClick={handleSubmit}
-                className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
-                disabled={isPending}
+                onClick={() => setChangePasswordSection((prev) => !prev)}
+                className="border border-primary flex items-center gap-[8px] text-title text-normal py-2 px-4 rounded-md"
               >
-                <FontAwesomeIcon icon={faUser} className="icons" />
-                {isPending ? "Saving..." : "Edit"}
-              </button>
-              <button
-              onClick={() => setChangePasswordSection((prev) => !prev)}
-              className="border border-primary flex items-center gap-[8px] text-title text-normal py-2 px-4 rounded-md"
-              >
-              <FontAwesomeIcon icon={faLockOpen} className="icons" />
-              {changePasswordSection ? "Cancel Password Change" : "Change Password"}
+                <FontAwesomeIcon icon={faLockOpen} className="icons" />
+                {changePasswordSection ? "Cancel Password Change" : "Change Password"}
               </button>
             </div>
           </div>
 
           <div className="flex items-center gap-3 mt-3">
-            <Input
-              label="First name"
-              placeholder="Enter first name"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <Input
-              label="Last name"
-              placeholder="Enter last name"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            <Input
-              label="Email"
-              placeholder="Enter email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            {isEditing ? (
+              <>
+                <Input
+                  label="First name"
+                  placeholder="Enter first name"
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <Input
+                  label="Last name"
+                  placeholder="Enter last name"
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                <Input
+                  label="Email"
+                  placeholder="Enter email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <p><strong>First name:</strong> {displayFirstName}</p>
+                <p><strong>Last name:</strong> {displayLastName}</p>
+                <p><strong>Email:</strong> {displayEmail}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -151,7 +180,7 @@ export function ProfileForm() {
               />
             </div>
             <button
-              onClick={handleSubmit}
+              onClick={handleSave}
               className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md mt-3"
               disabled={isPending}
             >
