@@ -8,7 +8,11 @@ import { message } from "antd";
 import { waitingListValidation, WaitingListFormData } from "@/lib/validations/waitingList";
 import { joinWaitingList } from "@/lib/api/waitingList";
 
-export default function WaitingForm() {
+type WaitingFormProps = {
+  callbackUrl?: string;
+};
+
+export default function WaitingForm({ callbackUrl }: WaitingFormProps) {
   const [fieldError, setFieldError] = useState<{ field: string; msg: string } | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -25,6 +29,9 @@ export default function WaitingForm() {
       await joinWaitingList(values.email);
       setSuccess(true);
       form.reset();
+      if (callbackUrl) {
+        window.location.href = callbackUrl;
+      }
     } catch (err: any) {
       const apiError = err?.response?.data;
       if (apiError?.field && apiError?.msg) {
@@ -35,11 +42,9 @@ export default function WaitingForm() {
     }
   };
 
-  if (success) {
+  if (success && !callbackUrl) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
-
-        {/* Checkmark */}
         <svg width="64" height="64" className="mb-4" viewBox="0 0 64 64">
           <circle cx="32" cy="32" r="32" fill="#E6F9ED" />
           <path
@@ -103,6 +108,7 @@ export default function WaitingForm() {
           </button>
         </div>
       </div>
+
       <div className="flex items-center justify-center my-3">
         <p className="text-[#98A2B3]">
           Already have an account?{" "}
