@@ -38,7 +38,7 @@ const WaitingListPageInner = () => {
                 <Image src={logo} alt="" className="h-[80px] w-full" />
               </div>
               <div className="max-w-sm mx-auto">
-                <WaitingForm callbackUrl={callbackUrl} />
+                <WaitingForm />
               </div>
             </div>
           </div>
