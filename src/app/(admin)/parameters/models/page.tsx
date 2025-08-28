@@ -48,7 +48,6 @@ export default function Page() {
             placeholder="Enter model name"
             type="text"
             value={modelName}
-            name="modelName"
             onChange={handleModelNameChange}
             required
           />
@@ -57,7 +56,6 @@ export default function Page() {
             placeholder="Enter API key"
             type="text"
             value={apiKey}
-            name="apiKey"
             onChange={handleApiKeyChange}
             required
           />
