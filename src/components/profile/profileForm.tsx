@@ -2,14 +2,24 @@
 
 import { useState, useEffect } from "react";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
+import { useQueryClient } from "@tanstack/react-query";
+import { logout } from "@/lib/auth/logout";
+
 import Input from "@/components/profile/inputs/input.component";
 import PasswordInput from "@/components/profile/inputs/password-input.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLockOpen, faPen, faFloppyDisk } from "@fortawesome/pro-light-svg-icons";
+import {
+  faUser,
+  faLockOpen,
+  faPen,
+  faFloppyDisk,
+  faRightFromBracket,
+} from "@fortawesome/pro-light-svg-icons";
 import Image from "next/image";
 import user from "@/assets/svg/logo.svg";
 
 export function ProfileForm() {
+  const queryClient = useQueryClient();
   const { data: profile, isLoading } = useProfile();
   const { mutate, isPending } = useUpdateProfile();
 
@@ -94,30 +104,40 @@ export function ProfileForm() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-                {isEditing ? (
+              {isEditing ? (
                 <button
-                    onClick={handleSave}
-                    className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
-                    disabled={isPending}
+                  onClick={handleSave}
+                  className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
+                  disabled={isPending}
                 >
-                    <FontAwesomeIcon icon={faFloppyDisk} className="icons" />
-                    {isPending ? "Saving..." : "Save"}
+                  <FontAwesomeIcon icon={faFloppyDisk} className="icons" />
+                  {isPending ? "Saving..." : "Save"}
                 </button>
-                ) : (
+              ) : (
                 <button
-                    onClick={() => setIsEditing(true)}
-                    className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
+                  onClick={() => setIsEditing(true)}
+                  className="bg-primary flex items-center gap-[8px] text-white text-normal py-2 px-4 rounded-md"
                 >
-                    <FontAwesomeIcon icon={faPen} className="icons" />
-                    Edit
+                  <FontAwesomeIcon icon={faPen} className="icons" />
+                  Edit
                 </button>
-                )}
+              )}
               <button
                 onClick={() => setChangePasswordSection((prev) => !prev)}
                 className="border border-primary flex items-center gap-[8px] text-title text-normal py-2 px-4 rounded-md"
               >
                 <FontAwesomeIcon icon={faLockOpen} className="icons" />
-                {changePasswordSection ? "Cancel Password Change" : "Change Password"}
+                {changePasswordSection
+                  ? "Cancel Password Change"
+                  : "Change Password"}
+              </button>
+              {/* ✅ Log out button */}
+              <button
+                onClick={() => logout(queryClient)}
+                className="border border-red-500 flex items-center gap-[8px] text-red-500 text-normal py-2 px-4 rounded-md hover:bg-red-500 hover:text-white transition"
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} className="icons" />
+                Log out
               </button>
             </div>
           </div>
@@ -149,9 +169,15 @@ export function ProfileForm() {
               </>
             ) : (
               <div className="flex flex-col gap-3">
-                <p><strong>First name:</strong> {displayFirstName}</p>
-                <p><strong>Last name:</strong> {displayLastName}</p>
-                <p><strong>Email:</strong> {displayEmail}</p>
+                <p>
+                  <strong>First name:</strong> {displayFirstName}
+                </p>
+                <p>
+                  <strong>Last name:</strong> {displayLastName}
+                </p>
+                <p>
+                  <strong>Email:</strong> {displayEmail}
+                </p>
               </div>
             )}
           </div>
