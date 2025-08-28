@@ -27,25 +27,32 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     <Layout className="h-screen">
       <Sider
         className={`bg-bgverticalimage transition-all duration-300 fixed h-screen flex-grow ${
-          isSidebarOpen ? "w-[250px]" : "w-0"
-        } ${isMobileView ? "hidden" : ""}`}
+          isMobileView ? "hidden" : ""
+        }`}
         width={250}
-        collapsedWidth={0}
+        collapsedWidth={80} // <-- keep a mini sidebar with only icons
         collapsible
         collapsed={!isSidebarOpen}
         trigger={null}
       >
-        <Sidebar />
+        <Sidebar isCollapsed={!isSidebarOpen} />
       </Sider>
 
-      <Layout className={`transition-all duration-300 ${isSidebarOpen && !isMobileView ? "ml-[250px]" : "ml-0"}`}>
+      <Layout
+        className={`transition-all duration-300 ${
+          isSidebarOpen && !isMobileView ? "ml-[250px]" : "ml-[80px]"
+        }`}
+      >
         <Content className="bg-body flex flex-col p-2">
           <div className="relative">
             <button
-              onClick={() => setIsSidebarOpen(v => !v)}
+              onClick={() => setIsSidebarOpen((v) => !v)}
               className="w-[40px] h-[40px] bg-body rounded-full flex items-center justify-center absolute top-2 left-[-30px] z-[999]"
             >
-              <FontAwesomeIcon icon={isSidebarOpen ? faArrowLeft : faArrowRight} className="icons" />
+              <FontAwesomeIcon
+                icon={isSidebarOpen ? faArrowLeft : faArrowRight}
+                className="icons"
+              />
             </button>
             <Navbar />
           </div>
