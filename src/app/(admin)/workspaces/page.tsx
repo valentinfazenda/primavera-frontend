@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcaseBlank, faPlus, faTrashAlt } from "@fortawesome/pro-light-svg-icons";
 import Link from "next/link";
 import { Workspace } from "@/types/workspace";
-import axiosInstance from "@/lib/axios/axios";
+import axiosInstance from "@/lib/axios/instance";
 import Selector from "@/components/select/select.component";
 
 export default function Dashboard() {

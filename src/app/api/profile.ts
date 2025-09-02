@@ -1,4 +1,4 @@
-import axiosInstance from '@/lib/axios/axios';
+import axiosInstance from '@/lib/axios/instance';
 
 export interface UpdateProfileDto {
   firstName?: string;

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcaseBlank, faComment, faMinus, faPlus, faStar, faTrashAlt } from '@fortawesome/pro-light-svg-icons';
 import Link from 'next/link';
-import axiosInstance from '@/lib/axios/axios';
+import axiosInstance from '@/lib/axios/instance';
 import { Chat } from '@/types/chat';
 import { Workspace } from '@/types/workspace';
 

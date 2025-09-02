@@ -11,9 +11,9 @@ import { useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { Suspense } from "react";
 import ReactMarkdown from "react-markdown";
-import axiosInstance from "@/lib/axios/axios";
+import axiosInstance from "@/lib/axios/instance";
 import TreeFile from "@/components/chats/chats-treefile.component";
-import WebSocketService from "@/lib/websocket/websocket-service";
+import WebSocketService from "@/lib/websocket/websocket";
 import { WebSocketResponse } from "@/types/websocketResponse";
 
 interface Message {

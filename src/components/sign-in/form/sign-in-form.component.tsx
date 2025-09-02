@@ -1,6 +1,6 @@
 "use client";
 import sadFace from "@/assets/svg/face-sad-sweat.svg";
-import axiosInstance from "@/lib/axios/axios";
+import axiosInstance from "@/lib/axios/instance";
 import { userSignInValidation } from "@/lib/validations/auth";
 import { faEye, faEyeSlash } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -160,7 +160,9 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
           <input
             {...form.register("email")}
             id="email"
+            name="email"
             type="email"
+            defaultValue=""
             className="form-input w-full text-gray-800 px-3 py-2 border border-[#D1E9FF] rounded-md bg-transparent"
             placeholder="Enter your email"
             required
@@ -197,6 +199,8 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
             <input
               {...form.register("password")}
               id="password"
+              name="password"
+              defaultValue=""
               type={showPassword ? "text" : "password"}
               className="form-input w-full text-gray-800 px-3 py-2 border border-[#D1E9FF] rounded-md bg-transparent"
               placeholder="Enter your password"
