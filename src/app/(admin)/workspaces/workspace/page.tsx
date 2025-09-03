@@ -1,5 +1,5 @@
 "use client";
-import axiosInstance from "@/lib/axios/axios";
+import axiosInstance from "@/lib/axios/instance";
 import { Chat } from "@/types/chat";
 import { Document } from "@/types/documents";
 import {

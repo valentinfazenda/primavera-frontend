@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { message } from "antd";
 import { waitingListValidation, WaitingListFormData } from "@/lib/validations/waitingList";
-import { joinWaitingList } from "@/lib/api/waitingList";
+import { joinWaitingList } from "@/app/api/waitingList";
 
 export default function WaitingForm() {
   const [fieldError, setFieldError] = useState<{ field: string; msg: string } | null>(null);
@@ -80,6 +80,7 @@ export default function WaitingForm() {
           <input
             {...form.register("email")}
             id="email"
+            name="email"
             type="email"
             className="form-input w-full text-gray-800 px-3 py-2 border border-[#D1E9FF] rounded-md bg-transparent"
             placeholder="Enter your email"
